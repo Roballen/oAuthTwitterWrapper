@@ -1,56 +1,48 @@
-﻿using System.Configuration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Web.Script.Serialization;
-using oAuthTwitterWrapper;
+﻿using oAuthTwitterWrapper;
+using oAuthTwitterWrapper.Configuration;
 
 namespace OAuthTwitterWrapper
 {
-    public class OAuthTwitterWrapper
+    public interface IOAuthTwitterWrapper
     {
-        private string oAuthConsumerKey = ConfigurationManager.AppSettings["oAuthConsumerKey"];
-        private string oAuthConsumerSecret = ConfigurationManager.AppSettings["oAuthConsumerSecret"];
-        private string oAuthUrl = ConfigurationManager.AppSettings["oAuthUrl"];
-        private static string screenname = ConfigurationManager.AppSettings["screenname"];
-        private static string include_rts = ConfigurationManager.AppSettings["include_rts"];
-        private static string exclude_replies = ConfigurationManager.AppSettings["exclude_replies"];
-        private static string count = ConfigurationManager.AppSettings["count"];
-        private static string timelineFormat = ConfigurationManager.AppSettings["timelineFormat"];
-        private string timelineUrl = string.Format(timelineFormat, screenname, include_rts, exclude_replies, count);
-		private static string searchFormat = ConfigurationManager.AppSettings["searchFormat"];
-		private static string searchQuery = ConfigurationManager.AppSettings["searchQuery"];
-		private string searchUrl = string.Format(searchFormat, searchQuery);
+        string GetMyTimeline();
+        string GetSearch();
+    }
+
+    public class OAuthTwitterWrapper : IOAuthTwitterWrapper
+    {
+        private IOAuthConfiguration _authConfig;
+        private ITwitterConfiguration _twitConfig;
+        public OAuthTwitterWrapper(IOAuthConfiguration authConfig, ITwitterConfiguration twitConfig)
+        {
+            _authConfig = authConfig;
+            _twitConfig = twitConfig;
+        }
 
         public string GetMyTimeline()
         {
-			var timeLineJson = string.Empty;
-			var authenticate = new Authenticate();
-			TwitAuthenticateResponse twitAuthResponse = authenticate.AuthenticateMe(oAuthConsumerKey, oAuthConsumerSecret, oAuthUrl);
-
-            // Do the timeline
-			var utility = new Utility();
-			timeLineJson = utility.RequstJson(timelineUrl, twitAuthResponse.token_type, twitAuthResponse.access_token);
-            
-            return timeLineJson;
+            return MakeRequest(_twitConfig.TimelineUrl);
         }
 
 		public string GetSearch()
 		{
-			var searchJson = string.Empty;
-			var authenticate = new Authenticate();
-			TwitAuthenticateResponse twitAuthResponse = authenticate.AuthenticateMe(oAuthConsumerKey, oAuthConsumerSecret, oAuthUrl);
-
-			// Do the timeline
-			var utility = new Utility();
-			searchJson = utility.RequstJson(searchUrl, twitAuthResponse.token_type, twitAuthResponse.access_token);
-
-			return searchJson;
+		    return MakeRequest(_twitConfig.SearchUrl);
 		}
+
+        private TwitAuthenticateResponse Authenticate()
+        {
+            var authenticate = new Authenticate();
+            return authenticate.AuthenticateMe(_authConfig.ConsumerToken, _authConfig.ConsumerSecret, _authConfig.AuthUrl);
+        }
+
+        private string MakeRequest(string url)
+        {
+            var twitAuthResponse = Authenticate();
+
+            var utility = new Utility();
+            var searchJson = utility.RequstJson(url, twitAuthResponse.token_type, twitAuthResponse.access_token);
+
+            return searchJson;
+        }
     }
 }

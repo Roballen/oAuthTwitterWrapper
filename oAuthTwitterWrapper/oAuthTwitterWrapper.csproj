@@ -46,9 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticate.cs" />
+    <Compile Include="Configuration\ITwitterConfiguration.cs" />
+    <Compile Include="Configuration\OAuthConfiguration.cs" />
     <Compile Include="OAuthTwitterWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwitAuthenticateResponse.cs" />
+    <Compile Include="Configuration\TwitterApplicationConfiguration.cs" />
+    <Compile Include="Configuration\TwitterConfiguration.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

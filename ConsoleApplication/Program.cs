@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OAuthTwitterWrapper;
+using oAuthTwitterWrapper;
+using oAuthTwitterWrapper.Configuration;
 
 namespace ConsoleApplication
 {
@@ -10,7 +8,19 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            var oAuthTwitterWrapper = new OAuthTwitterWrapper.OAuthTwitterWrapper();
+
+            var oAuth = new OAuthConfiguration()
+                            {
+                                ConsumerToken = "GPdZTjmPRVXP2cgYgjMQ",
+                                ConsumerSecret = "LDh41edDBODdRXrvfAjaK5niYGjiaLilaSPDPYOH6LI",
+                                AuthUrl = "https://api.twitter.com/oauth2/token"
+                            };
+            var twitconfig = new TwitterConfiguration()
+                                 {
+                                     ScreenName = "freshupdates"
+                                 };
+
+            var oAuthTwitterWrapper = new OAuthTwitterWrapper.OAuthTwitterWrapper(oAuth,twitconfig);
 			Console.Write("**** Time Line *****\n");
 			Console.Write(oAuthTwitterWrapper.GetMyTimeline() + "\n\n");
 			Console.Write("**** Search *****\n");

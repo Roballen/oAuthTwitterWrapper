@@ -6,6 +6,8 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OAuthTwitterWrapper;
+using oAuthTwitterWrapper;
+using oAuthTwitterWrapper.Configuration;
 
 namespace WebFormsApplication
 {
@@ -19,7 +21,16 @@ namespace WebFormsApplication
         [WebMethod]
         public static string GetTwitterFeed()
         {
-            var oAuthTwitterWrapper = new OAuthTwitterWrapper.OAuthTwitterWrapper();
+            var oAuth = new OAuthConfiguration()
+            {
+                ConsumerToken = "GPdZTjmPRVXP2cgYgjMQ",
+                ConsumerSecret = "LDh41edDBODdRXrvfAjaK5niYGjiaLilaSPDPYOH6LI"
+            };
+            var twitconfig = new TwitterConfiguration()
+            {
+                ScreenName = "freshupdates"
+            };
+            var oAuthTwitterWrapper = new OAuthTwitterWrapper.OAuthTwitterWrapper(oAuth,twitconfig);
 			return oAuthTwitterWrapper.GetMyTimeline();
         }
     }
