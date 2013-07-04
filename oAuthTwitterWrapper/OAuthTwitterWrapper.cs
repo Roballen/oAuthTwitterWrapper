@@ -29,6 +29,11 @@ namespace OAuthTwitterWrapper
 		    return MakeRequest(_twitConfig.SearchUrl);
 		}
 
+        public string GetStatusList()
+        {
+            return MakeRequest(_twitConfig.StatusListUrl);
+        }
+
         private TwitAuthenticateResponse Authenticate()
         {
             var authenticate = new Authenticate();

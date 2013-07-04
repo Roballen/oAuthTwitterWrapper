@@ -3,6 +3,10 @@ namespace oAuthTwitterWrapper.Configuration
     public interface ITwitterConfiguration
     {
         /// <summary>
+        /// Id of the list of statuses we want to retrieve with a status list call
+        /// </summary>
+        string ListId { get; set; }
+        /// <summary>
         /// The username or twitter handle
         /// </summary>
         string ScreenName { get; set; }
@@ -24,5 +28,6 @@ namespace oAuthTwitterWrapper.Configuration
         string SearchFormat { get; set; }
         string SearchQuery { get; set; }
         string SearchUrl { get; }
+        string StatusListUrl { get; }
     }
 }

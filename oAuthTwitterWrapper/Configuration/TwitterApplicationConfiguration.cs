@@ -5,6 +5,7 @@ namespace oAuthTwitterWrapper.Configuration
     public class TwitterApplicationConfiguration : ITwitterConfiguration
     {
         private static string _screenname = ConfigurationManager.AppSettings["screenname"];
+        private static string _listId = ConfigurationManager.AppSettings["listId"];
         private static string _include_rts = ConfigurationManager.AppSettings["include_rts"];
         private static string _exclude_replies = ConfigurationManager.AppSettings["exclude_replies"];
         private static string _count = ConfigurationManager.AppSettings["count"];
@@ -13,11 +14,18 @@ namespace oAuthTwitterWrapper.Configuration
         private static string _searchFormat = ConfigurationManager.AppSettings["searchFormat"];
         private static string _searchQuery = ConfigurationManager.AppSettings["searchQuery"];
         private static string _searchUrl = "";
+        private static string _statusListFormat = ConfigurationManager.AppSettings["statusListFormat"];
 
         public string ScreenName
         {
             get { return _screenname; }
             set { _screenname = value; }
+        }
+
+        public string ListId
+        {
+            get { return _listId; }
+            set { _listId = value; }
         }
 
         public string IncludeRts
@@ -69,6 +77,20 @@ namespace oAuthTwitterWrapper.Configuration
             get
             {
                 return string.Format(SearchFormat, SearchQuery);
+            }
+        }
+
+        public string StatusListFormat
+        {
+            get { return _statusListFormat; }
+            set { _statusListFormat = value; }
+        }
+
+        public string StatusListUrl
+        {
+            get
+            {
+                return string.Format(StatusListFormat, ScreenName, IncludeRts, ExcludeReplies, Count);
             }
         }
     }
