@@ -7,6 +7,7 @@ namespace OAuthTwitterWrapper
     {
         string GetMyTimeline();
         string GetSearch();
+        string GetStatusList();
     }
 
     public class OAuthTwitterWrapper : IOAuthTwitterWrapper
