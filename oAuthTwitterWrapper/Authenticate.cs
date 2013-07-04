@@ -34,7 +34,7 @@ namespace oAuthTwitterWrapper
 			authRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 			using (Stream stream = authRequest.GetRequestStream())
 			{
-				byte[] content = ASCIIEncoding.ASCII.GetBytes(postBody);
+				byte[] content = Encoding.ASCII.GetBytes(postBody);
 				stream.Write(content, 0, content.Length);
 			}
 			authRequest.Headers.Add("Accept-Encoding", "gzip");
@@ -44,7 +44,6 @@ namespace oAuthTwitterWrapper
 			{
 				using (var reader = new StreamReader(authResponse.GetResponseStream()))
 				{
-					JavaScriptSerializer js = new JavaScriptSerializer();
 					var objectText = reader.ReadToEnd();
 					twitAuthResponse = JsonConvert.DeserializeObject<TwitAuthenticateResponse>(objectText);
 				}
